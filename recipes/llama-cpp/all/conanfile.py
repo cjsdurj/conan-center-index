@@ -30,6 +30,8 @@ class LlamaCppConan(ConanFile):
         "with_cuda": [True, False],
         "with_vulkan": [True, False],
         "with_cann": [True, False],
+        "with_musa": [True, False],
+        "with_hip": [True, False],
         "with_curl": [True, False],
     }
     default_options = {
@@ -40,6 +42,8 @@ class LlamaCppConan(ConanFile):
         "with_cuda": False,
         "with_vulkan": False,
         "with_cann": False,
+        "with_musa": False,
+        "with_hip": False,
         "with_curl": False,
     }
 
@@ -122,6 +126,8 @@ class LlamaCppConan(ConanFile):
         tc.variables["GGML_CUDA"] = self.options.get_safe("with_cuda")
         tc.variables["GGML_VULKAN"] = self.options.get_safe("with_vulkan")
         tc.variables["GGML_CANN"] = self.options.get_safe("with_cann")
+        tc.variables["GGML_MUSA"] = self.options.get_safe("with_musa")
+        tc.variables["GGML_HIP"] = self.options.get_safe("with_hip")
         tc.generate()
 
     def build(self):
@@ -179,6 +185,10 @@ class LlamaCppConan(ConanFile):
             results.append("vulkan")
         if self.options.with_cann:
             results.append("cann")
+        if seld.options.with_musa:
+            results.append("musa")
+        if self.options.with_hip:
+            results.append("hip")
         return results
 
     def package_info(self):
